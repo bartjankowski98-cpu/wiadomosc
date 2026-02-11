@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>List dla Ciebie 💌</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(#ffdde1, #ee9ca7);
+    font-family: Arial, sans-serif;
+}
+
+/* SERCA */
+.hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.heart {
+    position: absolute;
+    color: rgba(255, 0, 80, 0.6);
+    font-size: 20px;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(100vh) scale(0.8);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-10vh) scale(1.4);
+        opacity: 0;
+    }
+}
+
+/* KOPERTA */
+.envelope-container {
+    cursor: pointer;
+    z-index: 5;
+}
+
+.envelope {
+    position: relative;
+    width: 420px;
+    height: 280px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+/* Klapka */
+.flap {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #f8b5c4;
+    clip-path: polygon(0 0, 50% 50%, 100% 0);
+    transform-origin: top;
+    transition: transform 0.8s ease;
+    z-index: 3;
+}
+
+/* List */
+.letter {
+    position: absolute;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 90%;
+    background: #fffafc;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    transition: bottom 1s ease;
+    z-index: 2;
+
+    overflow-y: auto;
+}
+
+/* Otwarcie */
+.open .flap {
+    transform: rotateX(180deg);
+}
+
+.open .letter {
+    bottom: 10px;
+}
+
+/* Scroll */
+.letter::-webkit-scrollbar {
+    width: 6px;
+}
+
+.letter::-webkit-scrollbar-thumb {
+    background: #f8b5c4;
+    border-radius: 3px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SERCA -->
+<div class="hearts" id="hearts"></div>
+
+<!-- KOPERTA -->
+<div class="envelope-container" onclick="openEnvelope()">
+    <div class="envelope" id="envelope">
+
+        <div class="flap"></div>
+
+        <div class="letter">
+            <h2>💖 DLA MAI 💖</h2>
+
+            <p>
+                Chciałbym Być dla Ciebie jak twoja strefa komfortu.
+Jeżeli jutro jest bez Ciebie to właściwie o co chodzi w życiu ? 
+Chciałbym napisać wiersz jak Szymborska a umiem tylko dobrać zlepek słów które jakoś się rymują a potem udawać przed mikrofonem że potrafię to jakoś wyrecytować, a prawda jest taka że nie potrafię i jest wiele lepszych ludzi w tym ode mnie, oni są przystojni, młodsi, mają talent a ja właściwie mam tylko myśl o Tobie i to w sumie proste jednak w swej prostocie piękne. Jakim dziwnym my organizmem jesteśmy, tacy niedopasowani, tacy bez planu, tacy widzący czego chcemy a wystarczy kilka chwil i okazuje się że potrzebujemy czegoś zupełnie innego. Tak było ze mną, tak było ze mną nim Cię poznałem. Samotność, pustka, polubiłem to... Moja oaza spokoju była wtedy kiedy siedziałem sam a tak naprawdę umierałem. Możesz to rozumieć różnie ale pisze ta wiadomość dość długo, chciałbym serio dać od siebie coś więcej ale na ten moment mogę tyle. Życie jest zabawne, kontynuuje pisanie tego po tym jak "poszliśmy" spać, Ty śpisz ale ja muszę to zapisac, wybacz. Życie jest zabawne tak powiedział w tym the old guard 2 części ten gość co dał nieśmiertelność szefowej... Wiesz dlaczego to prawda? Żyjemy sobie tak bez z siebie, każdy ma jakieś zajęcia wszystko jest takie samo jak zawsze, nagle przychodzi dzień właściwie noc kiedy jeden świat spotyka drugi i stopniowo dzień po dniu okazuje się że one ze sobą dobrze współgrają. To dziwne że jedna wiadomość może prowadzić do tyłu rzeczy. Maja naprawdę ze szczerego serca dziękuję Ci że jesteś. Że chciałaś być i chcesz być. Dużo to dla mnie znaczy. To naprawdę wiele dla mnie znaczy... Bartuś 💖
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- MUZYKA -->
+<audio id="music" loop>
+    <source src="muzyka.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let opened = false;
+
+/* OTWIERANIE */
+function openEnvelope() {
+
+    const env = document.getElementById("envelope");
+    const music = document.getElementById("music");
+
+    env.classList.toggle("open");
+
+    if (!opened) {
+        music.play();
+        opened = true;
+    }
+}
+
+/* GENERATOR SERC */
+function createHeart() {
+
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = 15 + Math.random() * 25 + "px";
+
+    const duration = 6 + Math.random() * 6;
+    heart.style.animationDuration = duration + "s";
+
+    document.getElementById("hearts").appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, duration * 1000);
+}
+
+/* Co ile serce */
+setInterval(createHeart, 400);
+</script>
+
+</body>
+</html>
